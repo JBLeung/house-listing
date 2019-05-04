@@ -1,0 +1,6 @@
+version: "3"
+services:
+  zokrates:
+    image: zokrates/zokrates
+    volumes:
+      - /Users/carltonjoseph/cj/cj2019/courses/udacity-blockchain-part2/capstone/Blockchain-Capstone/zokrates/code:/home/zokrates/code
