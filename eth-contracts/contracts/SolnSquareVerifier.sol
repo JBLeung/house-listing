@@ -3,10 +3,15 @@ pragma solidity >=0.4.21 <0.6.0;
 // TODO define a contract call to the zokrates generated solidity contract <Verifier> or <renamedVerifier>
 contract Verifier {
     function verifyTx(
-            uint[2] memory a,
-            uint[2][2] memory b,
-            uint[2] memory c,
-            uint[2] memory input
+            uint[2] calldata a,
+            uint[2] calldata a_p,
+            uint[2][2] calldata b,
+            uint[2] calldata b_p,
+            uint[2] calldata c,
+            uint[2] calldata c_p,
+            uint[2] calldata h,
+            uint[2] calldata k,
+            uint[2] calldata input
         ) external returns (bool r);
 }
 
@@ -14,7 +19,7 @@ contract Verifier {
 // TODO define another contract named SolnSquareVerifier that inherits from your ERC721Mintable class
 import "./ERC721Mintable.sol";
 contract SolnSquareVerifier is ERC721Mintable {
-
+  Verifier verifierContract;
   constructor (address verifierAdr, string memory name, string memory symbol)
     public {
     verifierContract = Verifier(verifierAdr);
@@ -24,8 +29,8 @@ contract SolnSquareVerifier is ERC721Mintable {
   // TODO define a solutions struct that can hold an index & an address
 
   struct Solution {
-    uint256 index;
     address solutionAdr;
+    uint256 index;
   }
 
   // TODO define an array of the above struct
@@ -36,30 +41,36 @@ contract SolnSquareVerifier is ERC721Mintable {
 
 
   // TODO Create an event to emit when a solution is added
-  event Solution(address, uint256);
+  event SolutionE(address, uint256);
 
 
   // TODO Create a function to add the solutions to the array and emit the event
 
   function addSolution (address to, uint256 tokenId) internal {
-    solution.push(Solution(to, tokenId));
-    Solution(to, tokenId);
+    solutions.push(Solution(to, tokenId));
+    emit SolutionE(to, tokenId);
   }
 
   // TODO Create a function to mint new NFT only after the solution has been verified
   //  - make sure the solution is unique (has not been used before)
   //  - make sure you handle metadata as well as tokenSuplly
 
-  mint(address to, uint256 tokenId,
+  function mint(address to, uint256 tokenId,
     uint[2] memory a,
+    uint[2] memory a_p,
     uint[2][2] memory b,
+    uint[2] memory b_p,
     uint[2] memory c,
-    uint[2] memory input) {
+    uint[2] memory c_p,
+    uint[2] memory h,
+    uint[2] memory k,
+    uint[2] memory input) public {
 
-    bytes32 key = keccak256(abi.encodePacked(a, b, c, input));
-    assert(uniqueSolution[key].solution != to, "solution used before");
-    if (verifierContract.verify(a, b, c, input)) {
-      uniqueSolution[key] = Solution(to, toke)
+    bytes32 key = keccak256(
+      abi.encodePacked(a, a_p, b, b_p, c, c_p, h, k, input));
+    require(uniqueSolutions[key].solutionAdr != to, "solution used before");
+    if (verifierContract.verifyTx(a, a_p, b, b_p, c, c_p, h, k, input)) {
+      uniqueSolutions[key] = Solution(to, tokenId);
       addSolution(to, tokenId);
       mint(to, tokenId);
     }

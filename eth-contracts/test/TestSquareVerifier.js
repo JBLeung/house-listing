@@ -4,8 +4,8 @@ var Verifier = artifacts.require("Verifier");
 // Test verification with correct proof
 // - use the contents from proof.json generated from zokrates steps
 const {
-  proof: { a, b, c },
-  inputs
+  proof: { A, A_p, B, B_p, C, C_p, H, K },
+  input
 } = require("./proof.json");
 
 // Test verification with incorrect proof
@@ -17,14 +17,25 @@ contract("Test Square Verifier", async accounts => {
   });
 
   it(`verify with correct proof`, async () => {
-    const v = await verifier.verifyTx.call(a, b, c, inputs);
+    console.log(A, A_p, B, B_p, C, C_p, H, K, input);
+    const v = await verifier.verifyTx.call(A, A_p, B, B_p, C, C_p, H, K, input);
     //console.log(v);
     //assert.equal(v, false, "Failed verify true.");
   });
 
   it(`verify with correct proof`, async () => {
-    const cmod = [c[0], c[1].slice(0, -5) + "00000"];
-    const v = await verifier.verifyTx(a, b, cmod, inputs);
+    const cmod = [C[0], C[1].slice(0, -5) + "00000"];
+    const v = await verifier.verifyTx.call(
+      A,
+      A_p,
+      B,
+      B_p,
+      cmod,
+      C_p,
+      H,
+      K,
+      input
+    );
     //console.log(v);
     //assert.equal(v, true, "Failed verify false.");
   });
