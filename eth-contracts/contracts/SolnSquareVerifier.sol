@@ -20,7 +20,8 @@ contract Verifier {
 import "./ERC721Mintable.sol";
 contract SolnSquareVerifier is ERC721Mintable {
   Verifier verifierContract;
-  constructor (address verifierAdr, string memory name, string memory symbol)
+//  constructor (address verifierAdr, string memory name, string memory symbol)
+  constructor (address verifierAdr)
     public {
     verifierContract = Verifier(verifierAdr);
   }

@@ -104,7 +104,7 @@ contract ERC165 {
     * @dev internal method for registering an interface
     */
   function _registerInterface(bytes4 interfaceId) internal {
-    require(interfaceId != 0xffffffff);
+    require(interfaceId != 0xffffffff, "invalid interface");
     _supportedInterfaces[interfaceId] = true;
   }
 }
@@ -201,7 +201,7 @@ contract ERC721 is Pausable, ERC165 {
   }
 
   function transferFrom(address from, address to, uint256 tokenId) public {
-    require(_isApprovedOrOwner(msg.sender, tokenId));
+    require(_isApprovedOrOwner(msg.sender, tokenId), "not an approved owner");
     _transferFrom(from, to, tokenId);
   }
 
@@ -211,7 +211,8 @@ contract ERC721 is Pausable, ERC165 {
 
   function safeTransferFrom(address from, address to, uint256 tokenId,
     bytes memory _data) public {
-    require(_checkOnERC721Received(from, to, tokenId, _data));
+    require(_checkOnERC721Received(from, to, tokenId, _data),
+      "not an ERC721Receiver");
     transferFrom(from, to, tokenId);
   }
 
@@ -243,8 +244,8 @@ contract ERC721 is Pausable, ERC165 {
   // TIP: remember the functions to use for Counters. you can refresh yourself with the link above
   function _mint(address to, uint256 tokenId) internal {
     // TODO revert if given tokenId already exists or given address is invalid
-    require(_exists(tokenId), "token already minted");
-    require(to == address(0), "address invalid");
+    require(!_exists(tokenId), "token already minted");
+    require(to != address(0), "address invalid");
     // TODO mint tokenId to given address & increase token count of owner
     _tokenOwner[tokenId] = to;
     _ownedTokensCount[to].increment();
@@ -541,7 +542,8 @@ contract ERC721Mintable is ERC721Metadata {
   constructor (string memory name, string memory symbol)
     ERC721Metadata(name, symbol,
       "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/") public
-  { }
+  {
+  }
 
   function mint(address to, uint256 tokenId) public onlyOwner()
     returns (bool) {
