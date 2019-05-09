@@ -17,26 +17,15 @@ contract("Test Square Verifier", async accounts => {
   });
 
   it(`verify with correct proof`, async () => {
-    console.log(A, A_p, B, B_p, C, C_p, H, K, input);
     const v = await verifier.verifyTx.call(A, A_p, B, B_p, C, C_p, H, K, input);
-    //console.log(v);
-    //assert.equal(v, false, "Failed verify true.");
+    assert.equal(v, true, "Failed verify true.");
   });
 
-  it(`verify with correct proof`, async () => {
-    const cmod = [C[0], C[1].slice(0, -5) + "00000"];
-    const v = await verifier.verifyTx.call(
-      A,
-      A_p,
-      B,
-      B_p,
-      cmod,
-      C_p,
-      H,
-      K,
-      input
-    );
-    //console.log(v);
-    //assert.equal(v, true, "Failed verify false.");
+  it(`verify with incorrect proof`, async () => {
+    const v = await verifier.verifyTx.call(A, A_p, B, B_p, C, C_p, H, K, [
+      8,
+      1
+    ]);
+    assert.equal(v, false, "Failed verify false.");
   });
 });
