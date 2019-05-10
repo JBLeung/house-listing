@@ -56,7 +56,6 @@ contract SolnSquareVerifier is ERC721Mintable {
   //  - make sure the solution is unique (has not been used before)
   //  - make sure you handle metadata as well as tokenSuplly
 
-  event MintSsv(uint256);
   function mint(address to,
     uint[2] memory a,
     uint[2] memory a_p,
@@ -75,7 +74,6 @@ contract SolnSquareVerifier is ERC721Mintable {
       addSolution(to, key);
       ERC721Mintable.mint(to, tokenId);
       tokenId++;
-      emit MintSsv(totalSupply());
     }
   }
 

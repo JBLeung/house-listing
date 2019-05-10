@@ -379,12 +379,10 @@ contract ERC721Enumerable is ERC165, ERC721 {
     * @param to address the beneficiary that will own the minted token
     * @param tokenId uint256 ID of the token to be minted
     */
-  event MintE(address to, uint256 tokenId, uint256 totalSupply);
   function _mint(address to, uint256 tokenId) internal {
     super._mint(to, tokenId);
     _addTokenToOwnerEnumeration(to, tokenId);
     _addTokenToAllTokensEnumeration(tokenId);
-    emit MintE(to, tokenId, totalSupply());
   }
 
   /**
