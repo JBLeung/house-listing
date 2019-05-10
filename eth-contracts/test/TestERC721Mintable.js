@@ -5,7 +5,7 @@ contract("TestERC721Mintable", accounts => {
   const account_two = accounts[1];
 
   describe("match erc721 spec", function() {
-    beforeEach(async function() {
+    before(async function() {
       const contract = await ERC721Mintable.new("bob", "hope", {
         from: account_one
       });

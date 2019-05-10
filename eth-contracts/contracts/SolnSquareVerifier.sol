@@ -19,16 +19,18 @@ contract Verifier {
 // TODO define another contract named SolnSquareVerifier that inherits from your ERC721Mintable class
 import "./ERC721Mintable.sol";
 contract SolnSquareVerifier is ERC721Mintable {
+
+  uint256 tokenId;
   Verifier verifierContract;
-//  constructor (address verifierAdr, string memory name, string memory symbol)
-  constructor (address verifierAdr)
+
+  constructor (address verifierAdr, string memory name, string memory symbol)
+  ERC721Mintable(name, symbol)
     public {
     verifierContract = Verifier(verifierAdr);
+    tokenId = 1;
   }
 
-  Verifier verifier;
   // TODO define a solutions struct that can hold an index & an address
-
   struct Solution {
     address solutionAdr;
     uint256 index;
@@ -40,14 +42,12 @@ contract SolnSquareVerifier is ERC721Mintable {
   // TODO define a mapping to store unique solutions submitted
   mapping(bytes32 => Solution) private uniqueSolutions;
 
-
   // TODO Create an event to emit when a solution is added
   event SolutionE(address, uint256);
 
-
   // TODO Create a function to add the solutions to the array and emit the event
-
-  function addSolution (address to, uint256 tokenId) internal {
+  function addSolution (address to, bytes32 key) internal {
+    uniqueSolutions[key] = Solution(to, tokenId);
     solutions.push(Solution(to, tokenId));
     emit SolutionE(to, tokenId);
   }
@@ -56,7 +56,8 @@ contract SolnSquareVerifier is ERC721Mintable {
   //  - make sure the solution is unique (has not been used before)
   //  - make sure you handle metadata as well as tokenSuplly
 
-  function mint(address to, uint256 tokenId,
+  event MintSsv(uint256);
+  function mint(address to,
     uint[2] memory a,
     uint[2] memory a_p,
     uint[2][2] memory b,
@@ -71,9 +72,10 @@ contract SolnSquareVerifier is ERC721Mintable {
       abi.encodePacked(a, a_p, b, b_p, c, c_p, h, k, input));
     require(uniqueSolutions[key].solutionAdr != to, "solution used before");
     if (verifierContract.verifyTx(a, a_p, b, b_p, c, c_p, h, k, input)) {
-      uniqueSolutions[key] = Solution(to, tokenId);
-      addSolution(to, tokenId);
-      mint(to, tokenId);
+      addSolution(to, key);
+      ERC721Mintable.mint(to, tokenId);
+      tokenId++;
+      emit MintSsv(totalSupply());
     }
   }
 
