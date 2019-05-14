@@ -19,6 +19,8 @@
  */
 
 const HDWalletProvider = require("truffle-hdwallet-provider");
+const MNEMONIC = process.env.MNEMONIC;
+const INFURA_KEY = process.env.INFURA_KEY;
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
