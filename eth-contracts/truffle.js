@@ -57,7 +57,8 @@ module.exports = {
         );
       },
       network_id: "4", // Rinkeby ID 4
-      gasPrice: 21000000000
+      gasPrice: 21000000000,
+      skipDryRun: true
     }
 
     // Another network with more advanced options...
