@@ -5,15 +5,27 @@ The code in this repository is based of
 and enhanced for the
 [Udacity Blockchain Term 2 Capstone Project](https://www.udacity.com/course/blockchain-developer-nanodegree--nd1309).
 
-Need to deploy with `truffle migrate --reset --network rinkeby` not deploy.
-Other command variations failed migrating the contract.
+- The tests for the project are run from the `eth-contracts` directory via the
+  command `truffle test` command.
+  Make sure to start the test blockchain via `ganache-cli` before testing.
+- The contract is deployed to the `rinkeby` network at address
+  `0x458D7c15E3392B95149c4FC3780805883d2eb0eD`.
+- The `abi.json` file in the root directory of the project provides the
+  contract abi.
+- The deployed contract can be viewed on OpenSea
+  [here](https://rinkeby.opensea.io/assets/bob).
 
-Helpfull links:
+Helpful links:
 
 - [myetherwallet](https://myetherwallet.com/interface/interact-with-contract)
-  to access and modify contracts directly
+  to access and modify contracts via the abi
 - [etherscan](https://rinkeby.etherscan.io)
   for verifying contract deployment and account balances
+
+## Reminders
+
+Need to deploy with `truffle migrate --reset --network rinkeby`.
+Other command variations failed migrating the contract.
 
 ## Notes - Ignore
 
@@ -21,6 +33,7 @@ Everything below this line can be ignored as they are just notes to myself.
 
 Read for student hub between 4/20/19 - 4/30/19.
 
+```
 CJSMBP:eth-contracts carltonjoseph\$ truffle migrate --reset --network rinkeby
 
 # Compiling your contracts...
@@ -103,3 +116,4 @@ Deploying 'SolnSquareVerifier'
 
 > Total deployments: 3
 > Final cost: 0.134681883 ETH
+```
