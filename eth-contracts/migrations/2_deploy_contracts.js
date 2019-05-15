@@ -2,10 +2,7 @@
 const Verifier = artifacts.require("./Verifier.sol");
 const SolnSquareVerifier = artifacts.require("./SolnSquareVerifier.sol");
 
-module.exports = function(deployer) {
-  deployer
-    .deploy(Verifier)
-    .then(() =>
-      deployer.deploy(SolnSquareVerifier, Verifier.address, "bob", "hope")
-    );
+module.exports = async function(deployer) {
+  await deployer.deploy(Verifier);
+  await deployer.deploy(SolnSquareVerifier, Verifier.address, "bob", "hope");
 };

@@ -53,14 +53,11 @@ module.exports = {
       provider: function() {
         return new HDWalletProvider(
           MNEMONIC,
-          "https://rinkeby.infura.io/v3/" + INFURA_KEY,
-          0,
-          1
+          "https://rinkeby.infura.io/v3/" + INFURA_KEY
         );
       },
       network_id: "4", // Rinkeby ID 4
-      gas: 4500000,
-      gasPrice: 10000000000
+      gasPrice: 21000000000
     }
 
     // Another network with more advanced options...
